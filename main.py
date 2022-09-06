@@ -1,22 +1,30 @@
-from random import randint
-from os import path, makedirs, walk
+from random import shuffle
+from os import path, makedirs
+import glob
 from shutil import copy2, rmtree
 
-INPUT_DIRECTORY = r'/Users/andrew/repos/name-randomizer/input'
-OUTPUT_DIRECTORY = r'/Users/andrew/repos/name-randomizer/output'
+WORKING_DIR = r'C:/Users/Andrew/repos/name-randomizer/'
 CLEAR_OUTPUT = True
 
+output_dir = path.join(WORKING_DIR, 'output')
+input_dir = path.join(WORKING_DIR, 'input')
+glob_dir = input_dir + "/**/*.*"
+
 if __name__ == "__main__":
-  if CLEAR_OUTPUT:
-    rmtree(OUTPUT_DIRECTORY)
-    makedirs(OUTPUT_DIRECTORY)
+    if CLEAR_OUTPUT:
+        rmtree(output_dir)
+        makedirs(output_dir)
 
-  for root, dirs, files in walk(INPUT_DIRECTORY):
-    for source_name in files:
-      source_path = path.join(INPUT_DIRECTORY, source_name)
+    files = glob.glob(glob_dir, recursive=True)
+    filenames = [str(i) for i in range(1, len(files) + 1)]
+    shuffle(filenames)
 
-      output_name = str(randint(0,99999)) + '.jpg'
-      output_path = path.join(OUTPUT_DIRECTORY, output_name)
+    for source_path in files:
+        file_extension = path.splitext(source_path)[1]
+        file_name = filenames.pop(-1)
 
-      print(f"{source_path} => {output_path}")
-      copy2(source_path, output_path)
+        output_name = file_name + file_extension
+        output_path = path.join(output_dir, output_name)
+
+        print(f"{source_path} => {output_path}")
+        copy2(source_path, output_path)
