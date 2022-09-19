@@ -1,6 +1,6 @@
 from random import shuffle
 from os import path, makedirs
-import glob
+from glob import glob
 from shutil import copy2, rmtree
 
 WORKING_DIR = r'C:/Users/Andrew/repos/name-randomizer/'
@@ -15,7 +15,10 @@ if __name__ == "__main__":
         rmtree(output_dir)
         makedirs(output_dir)
 
-    files = glob.glob(glob_dir, recursive=True)
+    files = glob(glob_dir, recursive=True)
+    print(f"Number of files: {len(files)}")
+    files = [file for file in files if 'exclude' not in file.lower()]
+    print(f"Number of files after removing exclusions: {len(files)}")
     filenames = [str(i) for i in range(1, len(files) + 1)]
     shuffle(filenames)
 
