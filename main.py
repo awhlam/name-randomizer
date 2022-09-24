@@ -1,9 +1,9 @@
 from random import shuffle
-from os import path, makedirs
+from os import path, makedirs, getcwd
 from glob import glob
 from shutil import copy2, rmtree
 
-WORKING_DIR = r'C:/Users/Andrew/repos/name-randomizer/'
+WORKING_DIR = getcwd()
 CLEAR_OUTPUT = True
 
 output_dir = path.join(WORKING_DIR, 'output')
