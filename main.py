@@ -9,7 +9,7 @@ CLEAR_OUTPUT_DIR = True
 LOG_FILENAME = f"logs/log-{datetime.now()}.txt".replace(":", "")
 GLOB_DIR = "input/**/*.*"
 
-if __name__ == "__main__":
+def main():
     for dir in DIR_NAMES:
         if not path.exists(dir):
             mkdir(dir)
@@ -20,7 +20,8 @@ if __name__ == "__main__":
 
     f = open(LOG_FILENAME, "w")
     files = glob(GLOB_DIR, recursive=True)
-    print(f"Number of files: {len(files)}")
+    num_files = len(files)
+    print(f"Number of files: {num_files}")
     files = [file for file in files if 'exclude' not in file.lower()]
     print(f"Number of files after removing exclusions: {len(files)}")
 
@@ -31,11 +32,24 @@ if __name__ == "__main__":
         file_extension = path.splitext(source_path)[1]
         file_name = filenames.pop(-1)
 
+        num_digits = count_digits(num_files)
+        file_name = file_name.zfill(num_digits)
+
         output_path = "output/" + file_name + file_extension
 
         log_message = f"{source_path} > {output_path}"
         f.write(log_message + "\n")
         print(log_message)
 
-        copy2(source_path, output_path)
+        #copy2(source_path, output_path)
     f.close()
+
+def count_digits(number):
+    count = 0
+    while number > 0:
+        number = number // 10
+        count += 1
+    return count
+
+if __name__ == "__main__":
+    main()
